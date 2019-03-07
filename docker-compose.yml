@@ -1,0 +1,16 @@
+version: "3"
+
+# Have a service called app, in build section of configuration, set context to "." which is current directory
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    # volume means whenever somethings changed, it'll be autmatically updated in container, dont need to restart docker to see changes
+    # Map project to docker image
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    
