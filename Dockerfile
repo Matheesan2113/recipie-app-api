@@ -1,30 +1,28 @@
-# Alpine is docker
-# Alpine is lightweight and fast to compile image
 FROM python:3.7-alpine
-# Optional, useful to figure out who's maintaing the project
-MAINTAINER London App Developer Ltd
 
-# Set Env VAR
+MAINTAINER Jon Gullotti
+
 ENV PYTHONUNBUFFERED 1
-# copy requirements file, to dockerimage
+
 COPY ./requirements.txt /requirements.txt
-# dont store registry index on docker file, minimize files on docker, 
-# small, no extra dependancies
+
 RUN apk add --update --no-cache postgresql-client
+
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
         gcc libc-dev linux-headers postgresql-dev
-# Runs PIP install, and stores it in requirements text file
+
 RUN pip install -r /requirements.txt
+
 RUN apk del .tmp-build-deps
-#Create empty folder, sqqitch to that directory, 
-#copy from local machine to docker image
+
 RUN mkdir /app
+
 WORKDIR /app
+
 COPY ./app /app
 
-#Create user for running applications ONLY
-#For security purposes, so that you're not running the docker on a root account
-#Createing seperate user reduces scope of application
 RUN adduser -D user
+
 USER user
+
 
