@@ -8,6 +8,10 @@ MAINTAINER London App Developer Ltd
 ENV PYTHONUNBUFFERED 1
 # copy requirements file, to dockerimage
 COPY ./requirements.txt /requirements.txt
+# dont store registry index on docker file, minimize files on docker, 
+# small, no extra dependancies
+RUN apk add --update --no-cache postgresql-client
+RUN apk add --update --no-cache --virtual
 # Runs PIP install, and stores it in requirements text file
 RUN pip install -r /requirements.txt
 
