@@ -5,11 +5,12 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,\
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password=None, **extra_fields): # creates method flexible
+    # creates method flexible
+    def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('User must have email')
-        user = self.model(email = self.normalize_email(email), **extra_fields)
-        user.set_password(password) #comes with AbstractBaseUser
+        user = self.model(email=self.normalize_email(email), **extra_fields)
+        user.set_password(password)  # comes with AbstractBaseUser
         user.save(using=self._db)
 
         return user
@@ -17,7 +18,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password):
         """Create new superuser"""
         user = self.create_user(email, password)
-        user.is_staff= True
+        user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
 
@@ -26,10 +27,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     """custome user model that supports using email instead of username"""
-    email = models.EmailField(max_length=255, unique = True)
+    email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
-    is_active = models.BooleanField(default = True)
-    is_staff = models.BooleanField(default = True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=True)
 
     objects = UserManager()
 
