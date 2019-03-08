@@ -11,10 +11,11 @@ COPY ./requirements.txt /requirements.txt
 # dont store registry index on docker file, minimize files on docker, 
 # small, no extra dependancies
 RUN apk add --update --no-cache postgresql-client
-RUN apk add --update --no-cache --virtual
+RUN apk add --update --no-cache --virtual .tmp-build-deps \
+        gcc libc-dev linux-headers postgresql-dev
 # Runs PIP install, and stores it in requirements text file
 RUN pip install -r /requirements.txt
-
+RUN apk del .tmp-build-deps
 #Create empty folder, sqqitch to that directory, 
 #copy from local machine to docker image
 RUN mkdir /app
